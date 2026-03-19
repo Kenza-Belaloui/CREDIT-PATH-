@@ -2,44 +2,69 @@ import React from 'react';
 
 export default function HistoryList({ history }) {
   if (!history || history.length === 0) {
-    return null;
+    return (
+      <div className="rounded-[24px] border border-white/10 bg-white/5 p-8 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-white/10 bg-slate-900 text-2xl">
+          🗂️
+        </div>
+        <h3 className="mt-4 text-xl font-bold text-white">Aucune simulation enregistrée</h3>
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-slate-400">
+          Dès qu’une simulation est lancée, elle apparaîtra ici avec sa date, son montant,
+          sa durée, la décision et le score de confiance.
+        </p>
+      </div>
+    );
   }
 
   return (
-    <div className="bg-slate-800 p-6 rounded-2xl shadow-xl mt-8 border border-slate-700 animate-fade-in">
-      <h3 className="text-xl font-bold text-gray-200 mb-4 flex items-center gap-2">
-         Historique des Simulations
-      </h3>
-      
-      <div className="overflow-x-auto rounded-lg border border-slate-700">
-        <table className="min-w-full text-sm text-left text-gray-400">
-          <thead className="text-xs text-gray-300 uppercase bg-slate-900/80">
+    <div className="overflow-hidden rounded-[24px] border border-white/10 bg-slate-950/70 shadow-xl">
+      <div className="overflow-x-auto">
+        <table className="min-w-full text-left text-sm text-slate-300">
+          <thead className="bg-slate-950 text-xs uppercase tracking-[0.18em] text-slate-500">
             <tr>
-              <th className="px-6 py-4 font-bold">Date</th>
-              <th className="px-6 py-4 font-bold">Montant</th>
-              <th className="px-6 py-4 font-bold">Durée</th>
-              <th className="px-6 py-4 font-bold">Décision</th>
-              <th className="px-6 py-4 font-bold">Confiance</th>
+              <th className="px-6 py-4 font-semibold">Date</th>
+              <th className="px-6 py-4 font-semibold">Montant</th>
+              <th className="px-6 py-4 font-semibold">Durée</th>
+              <th className="px-6 py-4 font-semibold">Décision</th>
+              <th className="px-6 py-4 font-semibold">Confiance</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-700">
+          <tbody className="divide-y divide-white/5">
             {history.map((item, index) => (
-              <tr key={index} className="bg-slate-800 hover:bg-slate-700 transition-colors">
+              <tr key={index} className="transition hover:bg-white/5">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {new Date(item.date_simulation).toLocaleDateString()} <span className="text-gray-600">|</span> {new Date(item.date_simulation).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                  <div className="font-medium text-white">
+                    {new Date(item.date_simulation).toLocaleDateString('fr-FR')}
+                  </div>
+                  <div className="mt-1 text-xs text-slate-500">
+                    {new Date(item.date_simulation).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </div>
                 </td>
-                <td className="px-6 py-4 font-medium text-white">
-                  {item.montant_demande.toLocaleString()} €
+
+                <td className="px-6 py-4 font-semibold text-white">
+                  {Number(item.montant_demande || 0).toLocaleString('fr-FR')} €
                 </td>
-                <td className="px-6 py-4">
+
+                <td className="px-6 py-4 text-slate-300">
                   {item.duree_pret} mois
                 </td>
+
                 <td className="px-6 py-4">
-                  <span className={`px-3 py-1 rounded-full text-xs font-bold border ${item.decision === "ACCORDÉ" ? 'bg-emerald-900/30 text-emerald-400 border-emerald-800' : 'bg-rose-900/30 text-rose-400 border-rose-800'}`}>
+                  <span
+                    className={`inline-flex rounded-full border px-3 py-1 text-xs font-semibold ${
+                      item.decision === 'ACCORDÉ'
+                        ? 'border-emerald-500/25 bg-emerald-500/10 text-emerald-300'
+                        : 'border-rose-500/25 bg-rose-500/10 text-rose-300'
+                    }`}
+                  >
                     {item.decision}
                   </span>
                 </td>
-                <td className="px-6 py-4 text-blue-300">
+
+                <td className="px-6 py-4 font-semibold text-blue-300">
                   {item.score_confiance}%
                 </td>
               </tr>
