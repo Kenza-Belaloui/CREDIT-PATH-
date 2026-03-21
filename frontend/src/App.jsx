@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation, Navigate, useNavigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Dashboard from './pages/Dashboard';
 import History from './pages/History';
@@ -8,80 +8,68 @@ import Register from './pages/Register';
 
 function AppLayout({ children, onLogout }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const menuItems = [
     {
       path: '/',
       label: 'Nouvelle simulation',
-      description: 'Créer une nouvelle étude',
       icon: 'M12 4.5v15m7.5-7.5h-15',
     },
     {
       path: '/dashboard',
       label: 'Analyse détaillée',
-      description: 'Indicateurs et projections',
       icon: 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z',
     },
     {
       path: '/history',
       label: 'Historique',
-      description: 'Suivi des simulations',
       icon: 'M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z',
     },
   ];
 
   const pageMeta = {
     '/': {
-      title: 'Simulation de crédit',
-      subtitle: 'Renseignez votre profil financier pour générer une analyse complète et contextualisée.',
+      title: 'Nouvelle simulation',
+      subtitle: 'Renseignez uniquement les données essentielles pour évaluer rapidement un dossier.',
     },
     '/dashboard': {
-      title: 'Tableau de bord analytique',
-      subtitle: 'Consultez les scores, projections de remboursement et indicateurs de performance du dossier.',
+      title: 'Analyse détaillée',
+      subtitle: 'Statistiques, graphiques, coût du crédit et lecture globale du dossier.',
     },
     '/history': {
-      title: 'Historique client',
-      subtitle: 'Retrouvez les simulations précédentes et comparez leur évolution dans le temps.',
+      title: 'Historique',
+      subtitle: 'Retrouvez les simulations précédentes enregistrées dans votre espace.',
     },
   };
 
   const currentPage = pageMeta[location.pathname] || {
     title: 'CreditPath AI',
-    subtitle: 'Plateforme intelligente de simulation de crédit.',
+    subtitle: 'Plateforme intelligente de simulation de crédit',
   };
 
   return (
     <div className="min-h-screen text-white">
-      <aside className="fixed left-0 top-0 z-50 hidden h-screen w-72 xl:flex flex-col border-r border-white/10 bg-slate-950/70 backdrop-blur-2xl">
+      <aside className="fixed left-0 top-0 z-50 hidden h-screen w-64 xl:flex flex-col border-r border-white/10 bg-slate-950/80 backdrop-blur-xl">
         <div className="border-b border-white/10 px-6 py-6">
-          <Link to="/" className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600 shadow-lg shadow-blue-900/30">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-violet-600 shadow-lg shadow-blue-900/30">
               <img
                 src="/logo/CP_LOGO.png"
                 alt="CreditPath Logo"
-                className="h-7 w-7 object-contain"
+                className="h-6 w-6 object-contain"
               />
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] text-slate-400">Plateforme IA</p>
-              <h1 className="text-xl font-bold text-white">
+              <p className="text-[10px] uppercase tracking-[0.28em] text-slate-500">Plateforme IA</p>
+              <h1 className="text-lg font-bold text-white">
                 Credit<span className="text-blue-400">Path</span>
               </h1>
             </div>
           </Link>
         </div>
 
-        <div className="px-4 py-5">
-          <div className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/10 to-violet-500/10 p-4">
-            <p className="text-xs uppercase tracking-[0.25em] text-blue-300">Workspace</p>
-            <h2 className="mt-2 text-sm font-semibold text-white">Credit Intelligence Suite</h2>
-            <p className="mt-2 text-xs leading-relaxed text-slate-400">
-              Analyse automatisée, lecture pédagogique du risque et recommandations stratégiques.
-            </p>
-          </div>
-        </div>
-
-        <nav className="flex-1 space-y-2 px-4 py-2">
+        <nav className="flex-1 space-y-2 px-4 py-5">
           {menuItems.map((item) => {
             const active = location.pathname === item.path;
 
@@ -89,30 +77,18 @@ function AppLayout({ children, onLogout }) {
               <Link
                 key={item.path}
                 to={item.path}
-                className={`group flex items-start gap-3 rounded-2xl border px-4 py-4 transition-all ${
+                className={`flex items-center gap-3 rounded-2xl border px-4 py-3 text-sm transition ${
                   active
-                    ? 'border-blue-500/30 bg-blue-500/15 shadow-lg shadow-blue-900/10'
-                    : 'border-transparent bg-transparent hover:border-white/10 hover:bg-white/5'
+                    ? 'border-blue-500/25 bg-blue-500/10 text-white'
+                    : 'border-transparent text-slate-400 hover:border-white/10 hover:bg-white/5 hover:text-white'
                 }`}
               >
-                <div
-                  className={`mt-0.5 rounded-xl p-2 ${
-                    active ? 'bg-blue-500/20 text-blue-300' : 'bg-white/5 text-slate-400 group-hover:text-white'
-                  }`}
-                >
+                <div className={`${active ? 'text-blue-300' : 'text-slate-500'}`}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.7} stroke="currentColor" className="h-5 w-5">
                     <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
                   </svg>
                 </div>
-
-                <div className="min-w-0">
-                  <p className={`text-sm font-semibold ${active ? 'text-white' : 'text-slate-200'}`}>
-                    {item.label}
-                  </p>
-                  <p className="mt-1 text-xs leading-relaxed text-slate-400">
-                    {item.description}
-                  </p>
-                </div>
+                <span className="font-medium">{item.label}</span>
               </Link>
             );
           })}
@@ -121,28 +97,30 @@ function AppLayout({ children, onLogout }) {
         <div className="border-t border-white/10 p-4">
           <button
             onClick={onLogout}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-300 transition hover:bg-rose-500/15"
+            className="flex w-full items-center justify-center rounded-2xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm font-semibold text-rose-300 transition hover:bg-rose-500/15"
           >
-            <span>Se déconnecter</span>
+            Se déconnecter
           </button>
         </div>
       </aside>
 
-      <div className="xl:ml-72">
-        <header className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/55 backdrop-blur-xl">
+      <div className="xl:ml-64">
+        <header className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/60 backdrop-blur-xl">
           <div className="mx-auto flex max-w-8xl items-center justify-between gap-4 px-4 py-4 md:px-8">
             <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-slate-500">CreditPath AI</p>
+              <p className="text-[10px] uppercase tracking-[0.26em] text-slate-500">CreditPath AI</p>
               <h2 className="mt-1 text-xl font-bold text-white md:text-2xl">{currentPage.title}</h2>
-              <p className="mt-1 max-w-3xl text-sm text-slate-400">{currentPage.subtitle}</p>
+              <p className="mt-1 text-sm text-slate-400">{currentPage.subtitle}</p>
             </div>
 
-            <div className="hidden md:flex items-center gap-3">
-              <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-slate-500">Mode</p>
-                <p className="text-sm font-semibold text-white">Analyste crédit</p>
-              </div>
-            </div>
+            {location.pathname !== '/dashboard' && (
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="hidden rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/10 md:block"
+              >
+                Voir l’analyse
+              </button>
+            )}
           </div>
         </header>
 
@@ -175,6 +153,7 @@ function App() {
 
   const [loading, setLoading] = useState(false);
   const [history, setHistory] = useState([]);
+  const [showDecisionModal, setShowDecisionModal] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
@@ -191,6 +170,7 @@ function App() {
     });
     setResult(null);
     setHistory([]);
+    setShowDecisionModal(false);
     setIsAuthenticated(false);
   };
 
@@ -229,6 +209,7 @@ function App() {
     e.preventDefault();
     setLoading(true);
     setResult(null);
+    setShowDecisionModal(false);
 
     const userId = localStorage.getItem('userId');
 
@@ -245,6 +226,7 @@ function App() {
 
       const data = await res.json();
       setResult(data);
+      setShowDecisionModal(true);
       fetchUserHistory();
     } catch (err) {
       alert('Erreur connexion serveur');
@@ -279,6 +261,8 @@ function App() {
                         handleSubmit={handleSubmit}
                         loading={loading}
                         result={result}
+                        showDecisionModal={showDecisionModal}
+                        setShowDecisionModal={setShowDecisionModal}
                       />
                     }
                   />
