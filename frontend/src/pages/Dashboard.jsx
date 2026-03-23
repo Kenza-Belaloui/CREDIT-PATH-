@@ -8,6 +8,7 @@ import AmortizationTable from '../components/AmortizationTable';
 import ActionPlan from '../components/ActionPlan';
 import BorrowerProfile from '../components/BorrowerProfile';
 import PersonalizedPlan from '../components/PersonalizedPlan';
+import ImprovementSimulator from '../components/ImprovementSimulator';
 
 function StatCard({ label, value, tone = 'default', helper }) {
   const toneMap = {
@@ -175,6 +176,10 @@ export default function Dashboard({ result, formData }) {
       <section>
         <PersonalizedPlan data={formData} result={result} />
       </section>
+
+      <section>
+          <ImprovementSimulator data={formData} result={result} />
+       </section>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
