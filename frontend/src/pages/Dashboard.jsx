@@ -172,24 +172,24 @@ export default function Dashboard({ result, formData }) {
       </section>
 
       <section>
-        <BorrowerProfile data={formData} result={result} />
+          <ExecutiveSummary result={result} />
       </section>
 
       <section>
-        <PersonalizedPlan data={formData} result={result} />
+          <BorrowerProfile result={result} />
+      </section>
+
+      <section>
+          <PersonalizedPlan result={result} />
       </section>
 
       <section>
           <ImprovementSimulator data={formData} result={result} />
-       </section>
+      </section>
 
-       <section>
-           <BankAdvisor data={formData} result={result} />
-       </section>
-
-       <section>
-           <ExecutiveSummary data={formData} result={result} />
-       </section>
+      <section>
+          <BankAdvisor result={result} />
+      </section>
 
       <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
